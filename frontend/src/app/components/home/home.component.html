@@ -1,0 +1,57 @@
+<section class="home-page">
+
+  <!-- ───────── CARROSSEL ───────── -->
+  <div id="servicesCarousel" class="carousel slide carousel-fade mb-5" data-bs-ride="carousel" data-bs-interval="2500">
+
+    <div class="carousel-inner">
+      @for (service of services; track service.name; let i = $index) {
+        <div class="carousel-item" [class.active]="i === 0">
+          <div class="carousel-card d-flex flex-column align-items-center justify-content-center"
+               [style.background]="service.bg">
+            <i class="bi {{ service.icon }} carousel-icon" [style.color]="service.color"></i>
+            <span class="carousel-label mt-3" [style.color]="service.color">{{ service.name }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#servicesCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#servicesCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+
+    <div class="carousel-indicators">
+      @for (service of services; track service.name; let i = $index) {
+        <button type="button" data-bs-target="#servicesCarousel"
+                [attr.data-bs-slide-to]="i"
+                [class.active]="i === 0"></button>
+      }
+    </div>
+
+  </div>
+
+  <!-- ───────── TEXTO CENTRAL ───────── -->
+  <div class="hero-text text-center mb-5 px-3">
+    <h1 class="display-5 fw-bold text-white mb-3">
+      Controle total dos seus <span class="highlight">streams</span> e <span class="highlight">assinaturas</span>
+    </h1>
+    <p class="lead text-secondary mx-auto">
+      Com o <strong class="text-white">GeriStreams</strong> você centraliza todas as suas assinaturas digitais em um só lugar.
+      Visualize quanto gasta por mês, identifique serviços que não utiliza e tome decisões inteligentes
+      para economizar sem abrir mão do que realmente importa.
+    </p>
+  </div>
+
+  <!-- ───────── BOTÕES ───────── -->
+  <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
+    <a routerLink="/register" class="btn btn-primary btn-lg px-5 fw-semibold">
+      <i class="bi bi-person-plus-fill me-2"></i>Criar conta grátis
+    </a>
+    <a routerLink="/login" class="btn btn-outline-light btn-lg px-5 fw-semibold">
+      <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+    </a>
+  </div>
+
+</section>

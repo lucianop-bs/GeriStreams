@@ -1,0 +1,14 @@
+// Bootstrap 5
+@use 'bootstrap/scss/bootstrap';
+
+// Bootstrap Icons
+@use 'bootstrap-icons/font/bootstrap-icons.css';
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

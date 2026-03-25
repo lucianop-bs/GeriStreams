@@ -1,0 +1,37 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow-sm" style="width: 100%; max-width: 420px;">
+    <div class="card-body p-4">
+      <h2 class="card-title text-center mb-4">
+        <i class="bi bi-play-circle-fill text-primary me-2"></i>GeriStreams
+      </h2>
+      <h5 class="text-center text-muted mb-4">Entrar na conta</h5>
+
+      <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">E-mail</label>
+          <input type="email" class="form-control" formControlName="email"
+                 [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched">
+          <div class="invalid-feedback">E-mail inválido.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-control" formControlName="senha"
+                 [class.is-invalid]="form.get('senha')?.invalid && form.get('senha')?.touched">
+          <div class="invalid-feedback">Senha obrigatória.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Entrar
+        </button>
+      </form>
+
+      <p class="text-center mt-3 mb-0">
+        Não tem conta? <a routerLink="/register">Cadastre-se</a>
+      </p>
+    </div>
+  </div>
+</div>

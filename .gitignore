@@ -1,0 +1,111 @@
+# =============================================
+# GeriStreams - .gitignore
+# Spring Boot (Backend) + Angular (Frontend)
+# =============================================
+
+# ----- IDEs & Editors -----
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+.kotlin
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# ----- Backend (Java / Spring Boot / Maven) -----
+
+# Maven build output
+backend/target/
+target/
+
+# Maven wrapper jar (regenerable)
+!.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot
+*.log
+backend/logs/
+spring-shell.log
+
+# Application local configs (may contain secrets)
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-local.yml
+backend/src/main/resources/application-dev.properties
+backend/src/main/resources/application-dev.yml
+
+# ----- Frontend (Angular / Node.js) -----
+
+# Dependencies
+frontend/node_modules/
+node_modules/
+
+# Build output
+frontend/dist/
+frontend/.angular/
+
+# Test & Coverage
+frontend/coverage/
+frontend/testem.log
+
+# Angular cache & misc
+frontend/.sass-cache/
+frontend/connect.lock
+frontend/libpeerconnection.log
+frontend/typings/
+
+# ----- Environment & Secrets -----
+.env
+.env.*
+*.env
+!*.env.example
+credentials.json
+*.pem
+*.key
+*.p12
+*.jks
+
+# ----- OS Files -----
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+
+# ----- Temp & Misc -----
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.orig
+
+# ----- Docker (if used) -----
+docker-compose.override.yml
+
+# ----- Claude AI -----
+.claude/agents/
+.claude/skills/
+.claude/settings.local.json

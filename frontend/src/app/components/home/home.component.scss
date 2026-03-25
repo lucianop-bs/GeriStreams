@@ -1,0 +1,66 @@
+.home-page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* ── Carrossel ── */
+#servicesCarousel {
+  width: 100%;
+  max-width: 480px;
+}
+
+.carousel-card {
+  height: 240px;
+  border-radius: 1rem;
+  width: 100%;
+}
+
+.carousel-icon {
+  font-size: 5rem;
+}
+
+.carousel-label {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Texto ── */
+.hero-text {
+  max-width: 640px;
+
+  .lead {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+}
+
+.highlight {
+  color: #6ea8fe;
+}
+
+/* ── Botões ── */
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.45);
+  }
+}
+
+.btn-outline-light {
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}

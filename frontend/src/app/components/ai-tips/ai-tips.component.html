@@ -1,0 +1,54 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-2">
+      <span class="text-primary fs-5">✦</span>
+      <span class="fw-semibold">Dicas personalizadas com IA</span>
+      <span class="badge bg-primary bg-opacity-10 text-primary small">Claude AI</span>
+    </div>
+    <button
+      class="btn btn-primary btn-sm"
+      (click)="gerarDicas()"
+      [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      <i *ngIf="!loading" class="bi bi-stars me-1"></i>
+      {{ gerado ? 'Gerar novamente' : 'Gerar dicas' }}
+    </button>
+  </div>
+
+  <div class="card-body">
+    <!-- Estado inicial -->
+    <div *ngIf="!loading && !dicas && !erro" class="text-center py-4 text-muted">
+      <span class="fs-2">✦</span>
+      <p class="mt-2 mb-0">
+        Clique em <strong>Gerar dicas</strong> para receber análise personalizada
+        do Claude AI sobre suas assinaturas.
+      </p>
+    </div>
+
+    <!-- Carregando -->
+    <div *ngIf="loading" class="text-center py-4">
+      <div class="d-flex align-items-center justify-content-center gap-3">
+        <div class="spinner-border text-primary" role="status"></div>
+        <div class="text-start">
+          <div class="fw-semibold">Analisando seu perfil financeiro...</div>
+          <small class="text-muted">O Claude está gerando dicas personalizadas para você</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Erro -->
+    <div *ngIf="erro && !loading" class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <span>{{ erro }}</span>
+    </div>
+
+    <!-- Dicas geradas -->
+    <div *ngIf="dicas && !loading">
+      <div class="alert alert-info d-flex align-items-start gap-2 mb-3 py-2">
+        <i class="bi bi-info-circle-fill mt-1 flex-shrink-0"></i>
+        <small>Análise gerada pelo <strong>Claude Sonnet 4.5</strong> com base no seu perfil financeiro atual.</small>
+      </div>
+      <div class="ai-response" [innerHTML]="dicasHtml"></div>
+    </div>
+  </div>
+</div>

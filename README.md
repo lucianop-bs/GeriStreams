@@ -1,11 +1,10 @@
 # GeriStreams
-
-**Gerenciador de Assinaturas de Streaming com IA**
-
 > Projeto da disciplina de **Programacao Web** — Professor **Daniel Lucena**
 > **Instituto Federal de Goias (IFG) — Campus Luziania**
-
----
+<div>
+ <img width="1262" height="1118" alt="Captura de tela 2026-03-26 154731" src="https://github.com/user-attachments/assets/05678527-06ee-4683-8fc7-ed31ce342465" />
+ <img width="2049" height="1507" alt="Captura de tela 2026-03-26 160222" src="https://github.com/user-attachments/assets/13b13827-55c6-49bf-8fd1-d1b28e8ab8fa" />
+<div>
 
 ## Sobre o Projeto
 

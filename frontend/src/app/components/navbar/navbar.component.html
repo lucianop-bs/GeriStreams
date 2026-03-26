@@ -16,15 +16,17 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/subscriptions"  routerLinkActive="active">
+          <a class="nav-link" routerLink="/subscriptions" routerLinkActive="active">
             <i class="bi bi-collection-play me-1"></i>Assinaturas
           </a>
         </li>
-        <li class="nav-item" *ngIf="isAdmin">
-          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
-            <i class="bi bi-shield-lock me-1"></i>Admin
-          </a>
-        </li>
+        @if (isAdmin()) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+              <i class="bi bi-shield-lock me-1"></i>Admin
+            </a>
+          </li>
+        }
       </ul>
 
       <button class="btn btn-outline-light btn-sm" (click)="logout()">

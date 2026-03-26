@@ -3,6 +3,8 @@ package com.projeto.service;
 import com.projeto.dto.ai.*;
 import com.projeto.dto.financeiro.ResumoFinanceiroDTO;
 import com.projeto.model.Usuario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Service
 public class AiService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AiService.class);
 
     private static final String SYSTEM_PROMPT = """
             Você é um consultor financeiro pessoal especializado em assinaturas de streaming e serviços digitais.
@@ -43,6 +47,8 @@ public class AiService {
         ResumoFinanceiroDTO resumo = assinaturaService.calcularResumoFinanceiro();
         Usuario usuario = usuarioService.getUsuarioAutenticado();
 
+        logger.info("Gerando dicas de IA para o usuário: {}", usuario.getEmail());
+
         String prompt = construirPrompt(usuario.getNome(), resumo);
 
         AnthropicRequestDTO requestBody = new AnthropicRequestDTO(
@@ -61,9 +67,11 @@ public class AiService {
                 .body(AnthropicResponseDTO.class);
 
         if (response == null) {
+            logger.error("API de IA retornou resposta nula para o usuário: {}", usuario.getEmail());
             throw new IllegalStateException("Nenhuma resposta recebida da API de IA.");
         }
 
+        logger.info("Dicas de IA geradas com sucesso para o usuário: {}", usuario.getEmail());
         return new AiDicasResponseDTO(response.extractText());
     }
 

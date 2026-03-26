@@ -1,54 +1,89 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AiService } from '../../services/ai.service';
+/**
+ * ai-tips.component.ts — Componente de Dicas com IA
+ *
+ * Responsabilidade: Exibir dicas personalizadas geradas pelo Claude AI.
+ *
+ * Gestão de Estado com Signals:
+ * - signal() para estado mutável: dicas, loading, erro, gerado
+ * - computed() para estado derivado: dicasHtml (converte Markdown → HTML)
+ * - Signals eliminam a necessidade de ChangeDetectorRef
+ * - Toda mudança via .set() dispara atualização automática do template
+ *
+ * Fluxo:
+ * 1. Usuário clica em "Gerar dicas"
+ * 2. API consulta Claude AI com dados financeiros do usuário
+ * 3. Claude retorna análise em Markdown
+ * 4. computed() dicasHtml converte Markdown para HTML automaticamente
+ * 5. Template renderiza com [innerHTML]
+ */
+
+import {Component, computed, inject, signal} from '@angular/core';
+import {AiService} from '../../services/ai.service';
+import {marked} from 'marked';
 
 @Component({
   selector: 'app-ai-tips',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './ai-tips.component.html'
 })
 export class AiTipsComponent {
 
-  dicas: string | null = null;
-  loading = false;
-  erro: string | null = null;
-  gerado = false;
+  /** Markdown retornado pela IA (null = ainda não gerado) */
+  readonly dicas = signal<string | null>(null);
 
-  constructor(private aiService: AiService,private cdr: ChangeDetectorRef) {}
+  // ============ ESTADO REATIVO (Signals) ============
+  /** Indica se a requisição à IA está em andamento */
+  readonly loading = signal(false);
+  /** Mensagem de erro se a requisição falhar */
+  readonly erro = signal<string | null>(null);
+  /** Flag indicando se as dicas já foram geradas ao menos uma vez */
+  readonly gerado = signal(false);
+  /**
+   * dicasHtml: Signal<string> computado
+   *
+   * Converte o Markdown do signal dicas() para HTML usando a biblioteca marked.
+   * computed() recalcula automaticamente quando dicas() muda.
+   *
+   * Suporte a Markdown: títulos, negrito, listas, código, citações, links.
+   * Resultado é usado no template com [innerHTML]="dicasHtml()"
+   */
+  readonly dicasHtml = computed(() => {
+    const d = this.dicas();
+    if (!d) return '';
+    return marked.parse(d, {async: false}) as string;
+  });
 
+  // ============ ESTADO DERIVADO (Computed Signal) ============
+  private readonly aiService = inject(AiService);
+
+  // ============ MÉTODOS ============
+
+  /**
+   * gerarDicas() — Solicita dicas personalizadas da IA
+   *
+   * Fluxo:
+   * 1. Ativa loading e limpa estado anterior via signal.set()
+   * 2. GET /api/ai/dicas
+   * 3. Sucesso: armazena markdown em dicas(), marca como gerado
+   * 4. Erro: armazena mensagem em erro()
+   * 5. computed() dicasHtml recalcula automaticamente
+   */
   gerarDicas(): void {
-    this.loading = true;
-    this.dicas = null;
-    this.erro = null;
+    this.loading.set(true);
+    this.dicas.set(null);
+    this.erro.set(null);
 
     this.aiService.gerarDicas().subscribe({
       next: res => {
-        this.dicas = res.dicas;
-        this.loading = false;
-        this.gerado = true;
-        this.cdr.detectChanges()
+        this.dicas.set(res.dicas);
+        this.loading.set(false);
+        this.gerado.set(true);
       },
       error: err => {
-        this.erro = err.error?.error ?? 'Não foi possível gerar as dicas. Tente novamente.';
-        this.loading = false;
+        this.erro.set(err.error?.error ?? 'Não foi possível gerar as dicas. Tente novamente.');
+        this.loading.set(false);
       }
     });
-  }
-
-  /**
-   * Converte o markdown simples retornado pelo Claude em HTML seguro.
-   * Suporta: **negrito**, listas numeradas e quebras de linha.
-   */
-  get dicasHtml(): string {
-    if (!this.dicas) return '';
-
-    return this.dicas
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^(\d+)\.\s(.+)$/gm, '<li>$2</li>')
-      .replace(/(<li>.*<\/li>(\n|$))+/g, match => `<ol>${match}</ol>`)
-      .replace(/^- (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>(\n|$))+/g, match => `<ul>${match}</ul>`)
-      .replace(/\n/g, '<br>');
   }
 }

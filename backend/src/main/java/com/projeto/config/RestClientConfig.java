@@ -17,9 +17,7 @@ public class RestClientConfig {
     @Value("${anthropic.api.version}")
     private String anthropicVersion;
 
-    /**
-     * RestClient pré-configurado com os headers obrigatórios da API da Anthropic.
-     */
+
     @Bean("anthropicRestClient")
     public RestClient anthropicRestClient() {
         return RestClient.builder()

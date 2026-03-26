@@ -6,7 +6,9 @@
       </h2>
       <h5 class="text-center text-muted mb-4">Criar conta</h5>
 
-      <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
+      @if (erro()) {
+        <div class="alert alert-danger">{{ erro() }}</div>
+      }
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="mb-3">
@@ -37,8 +39,10 @@
           <div class="invalid-feedback">Informe um salário válido.</div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <button [disabled]="loading()" class="btn btn-primary w-100" type="submit">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
           Cadastrar
         </button>
       </form>

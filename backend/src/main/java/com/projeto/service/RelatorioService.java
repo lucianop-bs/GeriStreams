@@ -10,6 +10,8 @@ import com.lowagie.text.pdf.draw.LineSeparator;
 import com.projeto.dto.assinatura.AssinaturaResponseDTO;
 import com.projeto.dto.financeiro.ResumoFinanceiroDTO;
 import com.projeto.model.Usuario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -20,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class RelatorioService {
+
+    private static final Logger logger = LoggerFactory.getLogger(RelatorioService.class);
 
     private static final Color COR_PRIMARIA  = new Color(13, 110, 253);
     private static final Color COR_CINZA     = new Color(108, 117, 125);
@@ -36,6 +40,8 @@ public class RelatorioService {
 
     public byte[] gerarRelatorioPdf() {
         Usuario usuario = usuarioService.getUsuarioAutenticado();
+        logger.info("Gerando relatório PDF para o usuário: {}", usuario.getEmail());
+
         ResumoFinanceiroDTO resumo = assinaturaService.calcularResumoFinanceiro();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -50,6 +56,7 @@ public class RelatorioService {
         adicionarRodape(doc);
 
         doc.close();
+        logger.info("Relatório PDF gerado com sucesso ({} bytes)", out.size());
         return out.toByteArray();
     }
 

@@ -182,7 +182,39 @@ GeriStreams/
 
 ## Como Rodar
 
-### Pre-requisitos
+### Opcao 1 — Docker (recomendado)
+
+Unica dependencia: **Docker Desktop** instalado e rodando.
+
+```bash
+git clone https://github.com/lucianop-bs/GeriStreams.git
+cd GeriStreams
+docker compose up --build
+```
+
+Acesse **http://localhost** — tudo ja esta compilado e configurado.
+
+> Na primeira execucao o build leva alguns minutos (download das imagens). Nas proximas vezes as camadas ficam em cache e e muito mais rapido.
+
+**Dicas de IA (opcional):** o recurso de dicas com Claude AI exige uma chave da Anthropic:
+
+```bash
+cp .env.example .env
+# Edite o .env e coloque sua ANTHROPIC_API_KEY
+docker compose up --build
+```
+
+**Criar admin (opcional):**
+
+```sql
+UPDATE usuarios SET role = 'ADMIN' WHERE email = 'seu@email.com';
+```
+
+---
+
+### Opcao 2 — Rodar localmente (desenvolvimento)
+
+**Pre-requisitos:**
 
 - Java JDK 21+
 - Maven 3.9+
@@ -190,7 +222,7 @@ GeriStreams/
 - Node.js 18+
 - Angular CLI (`npm install -g @angular/cli`)
 
-### 1. Banco de dados
+#### 1. Banco de dados
 
 ```sql
 CREATE DATABASE geristreams;
@@ -198,15 +230,7 @@ CREATE DATABASE geristreams;
 
 > As tabelas sao criadas automaticamente pelo Flyway.
 
-### 2. Configurar variaveis de ambiente
-
-```bash
-cd backend
-cp .env.example .env
-# Edite o .env com sua senha do PostgreSQL
-```
-
-### 3. Backend
+#### 2. Backend
 
 Abra a pasta `backend/` no **IntelliJ IDEA** e execute a classe `GeriStreamsApplication.java` (botao Run ou Shift+F10).
 
@@ -215,7 +239,7 @@ Abra a pasta `backend/` no **IntelliJ IDEA** e execute a classe `GeriStreamsAppl
 API disponivel em **http://localhost:8080**
 Swagger em **http://localhost:8080/swagger-ui.html**
 
-### 4. Frontend
+#### 3. Frontend
 
 ```bash
 cd frontend
@@ -225,7 +249,7 @@ ng serve
 
 Aplicacao disponivel em **http://localhost:4200**
 
-### 5. Criar admin (opcional)
+#### 4. Criar admin (opcional)
 
 ```sql
 UPDATE usuarios SET role = 'ADMIN' WHERE email = 'seu@email.com';

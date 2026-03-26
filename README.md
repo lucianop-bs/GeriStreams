@@ -192,7 +192,11 @@ cd GeriStreams
 docker compose up --build
 ```
 
-Acesse **http://localhost** — tudo ja esta compilado e configurado.
+| Servico    | URL                                          |
+|------------|----------------------------------------------|
+| Frontend   | http://localhost                             |
+| Swagger UI | http://localhost:8080/swagger-ui.html        |
+| API Docs   | http://localhost:8080/v3/api-docs            |
 
 > Na primeira execucao o build leva alguns minutos (download das imagens). Nas proximas vezes as camadas ficam em cache e e muito mais rapido.
 

@@ -106,6 +106,4 @@ ehthumbs_vista.db
 docker-compose.override.yml
 
 # ----- Claude AI -----
-.claude/agents/
-.claude/skills/
-.claude/settings.local.json
+**/.claude/

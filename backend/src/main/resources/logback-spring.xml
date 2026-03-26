@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ======================================================================
+         logback-spring.xml - Configuracao de Logging por Perfil (profile)
+
+         Spring Boot usa Logback como implementacao padrao do SLF4J.
+         Este arquivo permite configurar:
+           - Formato de saida dos logs
+           - Niveis de log por pacote
+           - Comportamento diferente por perfil (dev / prod)
+
+         Niveis de log (do mais verboso ao menos):
+           TRACE > DEBUG > INFO > WARN > ERROR
+
+         Perfis:
+           - default (sem profile ativo): modo dev com logs coloridos e SQL visivel
+           - prod: logs em JSON para facilitar integracao com ferramentas de observabilidade
+    ====================================================================== -->
+
+    <!-- ============ PROPRIEDADES ============ -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- ============ PERFIL DEFAULT (DESENVOLVIMENTO) ============ -->
+    <springProfile name="default | dev">
+
+        <!-- Console com cores para facilitar leitura no terminal -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{36}) - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Nivel INFO para o codigo do projeto -->
+        <logger name="com.projeto" level="DEBUG"/>
+
+        <!-- Nivel WARN para frameworks (reduz ruido) -->
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+
+        <!-- SQL formatado visivel em dev -->
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!-- ============ PERFIL PRODUCAO ============ -->
+    <springProfile name="prod">
+
+        <!-- Console com formato estruturado (facilita parsing por ferramentas) -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Arquivo de log rotacionado diariamente -->
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/geristreams.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- Rotaciona diariamente, mantem 30 dias -->
+                <fileNamePattern>logs/geristreams.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>500MB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <!-- Producao: apenas INFO+ para o codigo do projeto -->
+        <logger name="com.projeto" level="INFO"/>
+
+        <!-- Frameworks silenciosos -->
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.hibernate.SQL" level="WARN"/>
+
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>

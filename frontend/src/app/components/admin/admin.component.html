@@ -10,7 +10,6 @@
   }
 
   @if (!loading()) {
-    <!-- UC16 — Ranking de serviços -->
     @if (ranking().length > 0) {
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-white fw-semibold">
@@ -58,9 +57,7 @@
       </div>
     }
 
-    <!-- Usuários + Assinaturas -->
     <div class="row g-4">
-      <!-- Lista de usuários -->
       <div class="col-md-5">
         <div class="card shadow-sm">
           <div class="card-header bg-white fw-semibold">
@@ -84,7 +81,6 @@
                           class="badge">
                       {{ u.role }}
                     </span>
-                    <!-- UC15 -->
                     @if (u.role === 'USER') {
                       <button
                         (click)="$event.stopPropagation(); promover(u)"
@@ -106,7 +102,6 @@
         </div>
       </div>
 
-      <!-- Assinaturas do usuário selecionado -->
       @if (usuarioSelecionado()) {
         <div class="col-md-7">
           <div class="card shadow-sm">

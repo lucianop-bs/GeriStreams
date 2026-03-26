@@ -8,19 +8,16 @@
   }
 
   @if (!loading() && usuario() && resumo()) {
-    <!-- Cabeçalho -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
         <h4 class="mb-0">Olá, {{ usuario()!.nome }} <i class="bi bi-hand-wave"></i></h4>
         <small class="text-muted">Seu painel financeiro de assinaturas</small>
       </div>
-      <!-- UC17 -->
       <button class="btn btn-outline-secondary btn-sm" (click)="baixarRelatorio()">
         <i class="bi bi-file-earmark-pdf me-1"></i>Exportar PDF
       </button>
     </div>
 
-    <!-- Salário -->
     <div class="card mb-4 border-0 shadow-sm">
       <div class="card-body">
         <div class="d-flex align-items-center justify-content-between">
@@ -47,7 +44,6 @@
       </div>
     </div>
 
-    <!-- Cards de resumo -->
     <div class="row g-3 mb-4">
       <div class="col-md-4">
         <div class="card border-0 shadow-sm h-100">
@@ -80,7 +76,6 @@
       </div>
     </div>
 
-    <!-- Barra de progresso -->
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body">
         <div class="d-flex justify-content-between mb-1">
@@ -98,7 +93,6 @@
       </div>
     </div>
 
-    <!-- Gastos por categoria -->
     @if (categoriasEntries().length > 0) {
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-header bg-white fw-semibold">Gastos por Categoria</div>
@@ -120,14 +114,12 @@
       </div>
     }
 
-    <!-- Dicas com IA -->
     @if (resumo()!.assinaturas.length > 0) {
       <div class="mb-4">
         <app-ai-tips></app-ai-tips>
       </div>
     }
 
-    <!-- Sem assinaturas -->
     @if (resumo()!.assinaturas.length === 0) {
       <div class="text-center py-4">
         <i class="bi bi-collection-play fs-1 text-muted"></i>

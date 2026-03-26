@@ -20,7 +20,6 @@
 
   <div class="card-body">
     @if (!loading() && !dicas() && !erro()) {
-      <!-- Estado inicial -->
       <div class="text-center py-4 text-muted">
         <span class="fs-2">✦</span>
         <p class="mt-2 mb-0">
@@ -31,7 +30,6 @@
     }
 
     @if (loading()) {
-      <!-- Carregando -->
       <div class="text-center py-4">
         <div class="d-flex align-items-center justify-content-center gap-3">
           <div class="spinner-border text-primary" role="status"></div>
@@ -44,7 +42,6 @@
     }
 
     @if (erro() && !loading()) {
-      <!-- Erro -->
       <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <span>{{ erro() }}</span>
@@ -52,7 +49,6 @@
     }
 
     @if (dicas() && !loading()) {
-      <!-- Dicas geradas -->
       <div class="alert alert-info d-flex align-items-start gap-2 mb-3 py-2">
         <i class="bi bi-info-circle-fill mt-1 flex-shrink-0"></i>
         <small>Análise gerada pelo <strong>Claude Sonnet 4.5</strong> com base no seu perfil financeiro atual.</small>

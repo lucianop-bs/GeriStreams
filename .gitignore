@@ -107,3 +107,12 @@ docker-compose.override.yml
 
 # ----- Claude AI -----
 **/.claude/
+!.claude/
+!.claude/rules/
+!.claude/rules/*.md
+!.claude/agents/
+!.claude/agents/*.md
+!.claude/commands/
+!.claude/commands/*.md
+!.claude/skills/
+!.claude/skills/**/*.md

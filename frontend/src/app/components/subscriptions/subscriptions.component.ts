@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AssinaturaService} from '../../services/assinatura.service';
-import {AssinaturaRequest, AssinaturaResponse, CATEGORIAS} from '../../models/assinatura.model';
+import {AssinaturaRequest, AssinaturaResponse, CATEGORIAS, PLATAFORMAS_PREDEFINIDAS, PlataformaOpcao} from '../../models/assinatura.model';
 import {NavbarComponent} from '../navbar/navbar.component';
 
 @Component({
@@ -15,9 +15,12 @@ export class SubscriptionsComponent implements OnInit {
 
   readonly assinaturas = signal<AssinaturaResponse[]>([]);
   readonly categorias = CATEGORIAS;
+  readonly plataformas: PlataformaOpcao[] = PLATAFORMAS_PREDEFINIDAS;
   readonly editandoId = signal<number | null>(null);
   readonly mostrarFormulario = signal(false);
   readonly loading = signal(false);
+  readonly usandoOutro = signal(false);
+  readonly plataformaSelect = signal<string>('');
   private readonly assinaturaService = inject(AssinaturaService);
   private readonly fb = inject(FormBuilder);
   readonly form = this.fb.group({
@@ -39,9 +42,19 @@ export class SubscriptionsComponent implements OnInit {
     if (assinatura) {
       this.editandoId.set(assinatura.id);
       this.form.patchValue(assinatura);
+      const plataformaConhecida = this.plataformas.find(p => p.nome === assinatura.nome);
+      if (plataformaConhecida) {
+        this.plataformaSelect.set(assinatura.nome);
+        this.usandoOutro.set(false);
+      } else {
+        this.plataformaSelect.set('__outro__');
+        this.usandoOutro.set(true);
+      }
     } else {
       this.editandoId.set(null);
       this.form.reset();
+      this.plataformaSelect.set('');
+      this.usandoOutro.set(false);
     }
   }
 
@@ -49,6 +62,23 @@ export class SubscriptionsComponent implements OnInit {
     this.mostrarFormulario.set(false);
     this.editandoId.set(null);
     this.form.reset();
+    this.plataformaSelect.set('');
+    this.usandoOutro.set(false);
+  }
+
+  onPlataformaSelecionada(nome: string): void {
+    this.plataformaSelect.set(nome);
+    if (nome === '__outro__') {
+      this.usandoOutro.set(true);
+      this.form.get('nome')?.setValue('');
+    } else {
+      this.usandoOutro.set(false);
+      this.form.get('nome')?.setValue(nome);
+      const plataforma = this.plataformas.find(p => p.nome === nome);
+      if (plataforma) {
+        this.form.get('categoria')?.setValue(plataforma.categoria);
+      }
+    }
   }
 
   salvar(): void {

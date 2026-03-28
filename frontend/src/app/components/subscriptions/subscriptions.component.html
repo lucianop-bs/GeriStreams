@@ -18,10 +18,23 @@
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label">Nome do serviço</label>
-              <input [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched" class="form-control"
-                     formControlName="nome"
-                     placeholder="Ex: Netflix, Spotify..."
-                     type="text">
+              <select class="form-select"
+                      [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched"
+                      (change)="onPlataformaSelecionada($any($event.target).value)">
+                <option value="" [selected]="plataformaSelect() === ''">Selecione uma plataforma...</option>
+                @for (p of plataformas; track p.nome) {
+                  <option [value]="p.nome" [selected]="plataformaSelect() === p.nome">{{ p.nome }}</option>
+                }
+                <option value="__outro__" [selected]="plataformaSelect() === '__outro__'">Outro (digitar manualmente)</option>
+              </select>
+              @if (usandoOutro()) {
+                <input class="form-control mt-2"
+                       formControlName="nome"
+                       placeholder="Digite o nome do serviço"
+                       aria-label="Nome personalizado do serviço"
+                       [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched"
+                       type="text">
+              }
               <div class="invalid-feedback">Nome obrigatório.</div>
             </div>
             <div class="col-md-3">
